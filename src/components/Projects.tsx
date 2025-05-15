@@ -26,7 +26,6 @@ const listProjects = [
     description: "Create a Website Portfolio using ReactJS",
     imageUrl: WebPortfolio,
     category: "Branding / Signage",
-    link: "https://wamandaka.vercel.app/",
   },
   {
     name: "Dashboard Iuran Warga",
