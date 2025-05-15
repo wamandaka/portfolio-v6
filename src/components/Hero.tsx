@@ -51,16 +51,15 @@ const Hero = () => {
                 Get in Touch
               </a>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.8 }}>
+            {/* <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.8 }}>
               <a
-                href="https://drive.google.com/file/d/1OleZS0hx0FLzpG3C1MEiOCdTWPJ8SyfX/view"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-5 py-3 border-2 border-primary rounded-full cursor-pointer font-semibold hover:bg-primary hover:text-black transition-all duration-300"
               >
                 Download CV
               </a>
-            </motion.div>
+            </motion.div> */}
           </div>
           <h1 className="mt-10 text-xl uppercase tracking-widest">
             <SplitText text="Experience With" />
