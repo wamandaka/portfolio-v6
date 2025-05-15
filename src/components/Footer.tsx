@@ -1,4 +1,4 @@
-import { CiMail } from "react-icons/ci";
+// import { CiMail } from "react-icons/ci";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 // import { FaSquareXTwitter } from "react-icons/fa6";
 
@@ -9,10 +9,9 @@ const Footer = () => {
         id="contact"
         className="bg-[#191919] px-4 md:px-10 lg:px-72 py-10 text-center"
       >
-        <div className="flex items-center justify-center gap-2">
+        {/* <div className="flex items-center justify-center gap-2">
           <CiMail size={20} />
-          <a href="mailto:wamandaka122@gmail.com">wamandaka122@gmail.com</a>
-        </div>
+        </div> */}
         <div className="flex items-center justify-center gap-7 mt-3">
           <a
             href="https://github.com/wamandaka"
