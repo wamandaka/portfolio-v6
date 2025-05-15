@@ -29,7 +29,7 @@ const listProjects = [
     link: "https://wamandaka.vercel.app/",
   },
   {
-    name: "Dashboard UI",
+    name: "Dashboard Iuran Warga",
     description: "Create a Dashboard UI using ReactJS",
     imageUrl: DashboardIuran,
     category: "Branding / Signage",
