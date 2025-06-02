@@ -1,7 +1,7 @@
-import WebPortfolio from "../assets/projects/web-portfolio.png";
 import WeatherApp from "../assets/projects/weather-app.png";
 import DashboardIuran from "../assets/projects/dashboard-jakmen.png";
 import viptiket from "../assets/projects/viptiket.png";
+import MovieApp from "../assets/projects/movie-app.png";
 import * as motion from "motion/react-client";
 import type { Variants } from "motion/react";
 import TiltedCard from "./ui/framer-motion/TiltedCard";
@@ -22,10 +22,11 @@ const listProjects = [
     category: "Branding / Signage",
   },
   {
-    name: "Website Portfolio",
-    description: "Create a Website Portfolio using ReactJS",
-    imageUrl: WebPortfolio,
+    name: "Website Movie App",
+    description: "Create a Movie App using ReactJS, TMDB API and TailwindCSS",
+    imageUrl: MovieApp,
     category: "Branding / Signage",
+    link: "https://seryu-movie-app.netlify.app/",
   },
   {
     name: "Dashboard Iuran Warga",
