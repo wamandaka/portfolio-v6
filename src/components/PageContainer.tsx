@@ -5,7 +5,7 @@ interface PageContainerProps {
 }
 
 const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
-  return <div className="px-5 md:px-10 lg:px-72">{children}</div>;
+  return <div className="px-5 md:px-10 lg:px-72 xl:px-96">{children}</div>;
 };
 
 export default PageContainer;

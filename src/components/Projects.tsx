@@ -33,6 +33,7 @@ const listProjects = [
     description: "Create a Dashboard UI using ReactJS",
     imageUrl: DashboardIuran,
     category: "Branding / Signage",
+    link: "https://iuran-warga.netlify.app/",
   },
 ];
 
