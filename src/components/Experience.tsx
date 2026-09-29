@@ -1,256 +1,301 @@
-import React from "react";
-import * as motion from "motion/react-client";
-import { FiBriefcase, FiCalendar, FiCheckCircle, FiMapPin } from "react-icons/fi";
-import { RiBuilding4Line, RiBankFill } from "react-icons/ri";
+import React, { useState } from "react";
+import { FiLayers, FiShield, FiCpu, FiTerminal } from "react-icons/fi";
+import { sound } from "./ui/AudioHelper";
+import { Parallax } from "./ui/Parallax";
 
-interface ExperienceItem {
+interface ExperienceDossier {
+  index: string;
   role: string;
-  employmentType: string;
+  type: string;
   company: string;
   client?: string;
   project?: string;
-  location: string;
   period: string;
+  location: string;
   isCurrent?: boolean;
-  badge?: string;
-  accentColor: string;
-  description: string;
-  responsibilities: string[];
-  skills: string[];
+  parallaxSpeed: number;
+  leadSummary: string;
+  deepDiveTabs: {
+    label: string;
+    icon: React.ReactNode;
+    title: string;
+    points: string[];
+  }[];
+  techStack: string[];
 }
 
-const experiences: ExperienceItem[] = [
+const dossiers: ExperienceDossier[] = [
   {
+    index: "01",
     role: "Frontend Developer (TAD / Vendor Contract)",
-    employmentType: "Contract Specialist",
+    type: "Contract Specialist",
     company: "NTT DATA Indonesia",
     client: "PT Bank Negara Indonesia (Persero) Tbk (BNI)",
-    project: "BNIMove HUB - Enterprise Mobility & Digital Workforce Ecosystem",
+    project: "BNIMove HUB — Enterprise Mobility & Digital Workforce Ecosystem",
+    period: "2025 — PRESENT",
     location: "Jakarta, Indonesia",
-    period: "May 2025 - Present",
     isCurrent: true,
-    badge: "Current Enterprise Role",
-    accentColor: "from-cyan-500 to-blue-600",
-    description:
-      "Assigned as an outsourced specialist (TAD) from NTT DATA Indonesia to Bank Negara Indonesia (BNI), contributing to the core enterprise frontend engineering for BNIMove HUB.",
-    responsibilities: [
-      "Architected and developed enterprise-grade, responsive web modules for BNIMove HUB, an internal workforce mobility and operational management ecosystem serving bank-wide departments.",
-      "Engineered reusable, highly accessible UI components with React, TypeScript, and modern component design patterns to ensure strict design system consistency and rapid feature delivery.",
-      "Integrated secure RESTful microservices and backend endpoints with robust client-side validation, error boundaries, and asynchronous data fetching.",
-      "Implemented secure role-based access workflows (RBAC) and data confidentiality standards aligned with enterprise banking governance.",
-      "Collaborated actively in an Agile/Scrum cross-functional squad including product owners, system architects, UI/UX designers, backend engineers, and QA for seamless sprint releases.",
-      "Optimized rendering performance, reducing layout shifts and ensuring fast responsiveness across diverse enterprise devices.",
+    parallaxSpeed: 30,
+    leadSummary:
+      "Assigned as an outsourced specialist (TAD) from NTT DATA Indonesia to Bank Negara Indonesia (BNI) to engineer the frontend infrastructure of BNIMove HUB, an enterprise mobility platform driving bank-wide workforce operations.",
+    deepDiveTabs: [
+      {
+        label: "Architecture & Scale",
+        icon: <FiLayers size={14} />,
+        title: "Modular Frontend Component System",
+        points: [
+          "Architected responsive, enterprise-grade web modules for BNIMove HUB, supporting daily operations across banking divisions.",
+          "Constructed reusable, highly accessible UI component primitives with React and TypeScript, eliminating regression and enforcing design consistency.",
+          "Designed multi-module dashboard navigation ensuring zero unhandled states and fluid desktop/mobile viewport adaptability.",
+        ],
+      },
+      {
+        label: "Security & RBAC",
+        icon: <FiShield size={14} />,
+        title: "Role-Based Governance & Data Isolation",
+        points: [
+          "Implemented strict Role-Based Access Control (RBAC) across views, securing sensitive workflow actions by authorization tier.",
+          "Enforced privacy-safe data sanitization and memory management compliant with national banking IT digital governance.",
+          "Prevented client-side credential and state leakage through hardened authentication lifecycle hooks.",
+        ],
+      },
+      {
+        label: "Data & Microservices",
+        icon: <FiCpu size={14} />,
+        title: "Resilient Microservices Integration",
+        points: [
+          "Integrated secure RESTful microservice endpoints with client-side caching, input validation, and graceful fallback boundaries.",
+          "Eliminated unnecessary re-renders through targeted state slices, achieving smooth 60fps data interaction during heavy operations.",
+          "Collaborated in Agile/Scrum cross-functional squads alongside system architects, backend teams, UI/UX designers, and QA.",
+        ],
+      },
     ],
-    skills: [
-      "React",
+    techStack: [
+      "React 19",
       "TypeScript",
       "TailwindCSS",
       "RESTful Microservices",
-      "Enterprise Architecture",
       "RBAC Security",
+      "Enterprise UI System",
       "Agile/Scrum",
       "Git",
     ],
   },
   {
+    index: "02",
     role: "Frontend Developer",
-    employmentType: "Contract / Project",
+    type: "Project Contract",
     company: "PT Indosistem Teknologi Utama",
+    period: "NOV 2024 — APR 2025",
     location: "Jakarta, Indonesia",
-    period: "Nov 2024 - Apr 2025",
     isCurrent: false,
-    badge: "Web Applications",
-    accentColor: "from-blue-500 to-indigo-600",
-    description:
-      "Delivered responsive web interfaces, interactive administrative dashboards, and customer-facing ticketing applications.",
-    responsibilities: [
-      "Developed responsive dashboard interfaces using ReactJS and Next.js, significantly improving data clarity and operational user experience.",
-      "Engineered an online event ticketing web platform (VIP Tiket), simplifying ticket purchasing, seat reservation, and event management.",
-      "Collaborated with cross-functional teams to ensure design consistency, component modularity, and rapid scalability using TailwindCSS.",
-      "Integrated RESTful APIs using Axios to fetch real-time data with error boundary fallbacks and fast state updates.",
-      "Coordinated with backend engineers for seamless continuous deployment and Git version control management.",
+    parallaxSpeed: -20,
+    leadSummary:
+      "Engineered customer-facing event ticketing portals and administrative analytics dashboards with ReactJS and Next.js.",
+    deepDiveTabs: [
+      {
+        label: "Ticketing & Dashboards",
+        icon: <FiLayers size={14} />,
+        title: "VIP Tiket & Operational Dashboards",
+        points: [
+          "Developed responsive dashboard interfaces for data tracking, significantly optimizing transaction review speed.",
+          "Built customer-facing VIP Tiket platform with smooth ticketing, event scheduling, and dynamic checkout workflows.",
+          "Leveraged Axios with unified interceptors for centralized error handling and real-time state synchronization.",
+        ],
+      },
     ],
-    skills: ["ReactJS", "Next.js", "TailwindCSS", "Axios", "RESTful APIs", "Git", "Responsive UI"],
+    techStack: ["Next.js", "ReactJS", "TailwindCSS", "Axios", "RESTful API", "Git"],
   },
   {
+    index: "03",
     role: "Mendix Developer Internship",
-    employmentType: "Internship",
+    type: "Internship",
     company: "PT Merkle Innovation Technology",
+    period: "APR 2024 — JUL 2024",
     location: "Jakarta, Indonesia",
-    period: "Apr 2024 - Jul 2024",
     isCurrent: false,
-    badge: "Low-Code Enterprise",
-    accentColor: "from-teal-500 to-emerald-600",
-    description:
+    parallaxSpeed: 20,
+    leadSummary:
       "Specialized in rapid enterprise application development, domain modeling, and automated business workflows using Mendix Studio Pro.",
-    responsibilities: [
-      "Engineered an automated Contract Monitoring System within Mendix Studio Pro low-code suite.",
-      "Designed clean, user-centric interfaces tailored to corporate contract lifecycle management.",
-      "Established relational domain models between business entities, fostering high data integrity and frictionless information flow.",
-      "Utilized custom microflows to automate data validation, record processing, and status lifecycle triggers.",
+    deepDiveTabs: [
+      {
+        label: "Low-Code Systems",
+        icon: <FiTerminal size={14} />,
+        title: "Contract Monitoring System",
+        points: [
+          "Engineered an automated Contract Monitoring System utilizing Mendix Studio Pro low-code suite.",
+          "Configured complex relational domain models to safeguard transaction integrity across contract lifecycles.",
+          "Built custom microflows to automate validation, data transfers, and notification triggers.",
+        ],
+      },
     ],
-    skills: ["Mendix Studio Pro", "Low-Code Development", "Domain Modeling", "Microflows", "UI Design"],
+    techStack: ["Mendix Studio Pro", "Low-Code", "Domain Modeling", "Microflows", "UI Design"],
   },
 ];
 
-const Experience: React.FC = () => {
+export const Experience: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<number>(0);
+
   return (
-    <section id="experience" className="py-20 relative">
-      <div className="flex flex-col gap-12">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto">
-          <p className="text-xs font-mono uppercase tracking-widest text-cyan-400 font-semibold mb-2">
-            Career Journey & Experience
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Professional <span className="gradient-accent">Work Experience</span>
-          </h2>
-          <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
-            Delivering mission-critical enterprise banking platforms and performant web products with modern engineering standards.
-          </p>
+    <section id="experience" className="py-24 sm:py-32 relative border-t border-white/5 overflow-hidden scroll-mt-28">
+      {/* Background Parallax Watermark */}
+      <Parallax speed={-90} className="absolute top-20 right-[-4%] select-none pointer-events-none z-0">
+        <span
+          className="font-display font-black text-[140px] sm:text-[220px] md:text-[300px] text-white/[0.015] leading-none block"
+          aria-hidden="true"
+        >
+          BNI
+        </span>
+      </Parallax>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
+        {/* Section Index Marker */}
+        <div className="flex items-center gap-3 font-mono text-xs text-neutral-400 mb-4 uppercase tracking-widest">
+          <span className="text-amber-400">03 //</span>
+          <span>ENTERPRISE DOSSIER & WORK HISTORY</span>
         </div>
 
-        {/* Timeline Container */}
-        <div className="relative border-l border-slate-800 ml-4 sm:ml-8 md:ml-10 space-y-12 pl-6 sm:pl-10">
-          {experiences.map((exp, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: idx * 0.1 }}
-              className="relative group"
-            >
-              {/* Timeline Indicator Node */}
+        <h2 className="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl text-white tracking-tight uppercase max-w-4xl leading-[1.05] mb-12">
+          Proven Track Record in <span className="text-amber-400">Mission-Critical</span> Environments.
+        </h2>
+
+        {/* Dossier List with Parallax Staggering */}
+        <div className="space-y-12">
+          {dossiers.map((item) => (
+            <Parallax key={item.index} speed={item.parallaxSpeed}>
               <div
-                className={`absolute -left-[31px] sm:-left-[47px] top-1.5 w-6 h-6 rounded-full bg-slate-900 border-2 flex items-center justify-center transition-all duration-300 ${
-                  exp.isCurrent
-                    ? "border-cyan-400 shadow-lg shadow-cyan-500/50"
-                    : "border-slate-700 group-hover:border-cyan-500/60"
+                className={`editorial-card rounded-2xl border transition-all duration-300 overflow-hidden ${
+                  item.isCurrent
+                    ? "border-amber-400/40 shadow-2xl shadow-amber-950/20 bg-neutral-900/80"
+                    : "border-white/10 hover:border-white/20"
                 }`}
               >
-                <div
-                  className={`w-2 h-2 rounded-full ${
-                    exp.isCurrent ? "bg-cyan-400 animate-ping" : "bg-slate-500"
-                  }`}
-                />
-              </div>
+                {/* Card Header Strip */}
+                <div className="p-6 sm:p-8 border-b border-white/10 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                  <div className="flex items-start gap-4 sm:gap-6">
+                    <span className="font-mono text-2xl sm:text-3xl font-bold text-amber-400/80 shrink-0">
+                      [{item.index}]
+                    </span>
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2 mb-2 font-mono text-xs">
+                        {item.isCurrent ? (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-amber-400/20 text-amber-300 font-semibold border border-amber-400/40">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                            ACTIVE ASSIGNMENT
+                          </span>
+                        ) : (
+                          <span className="px-2.5 py-0.5 rounded bg-white/5 text-neutral-400 border border-white/10">
+                            {item.type}
+                          </span>
+                        )}
+                        <span className="text-neutral-400">•</span>
+                        <span className="text-neutral-300">{item.period}</span>
+                      </div>
 
-              {/* Experience Card */}
-              <div
-                className={`glass-panel p-6 sm:p-8 rounded-3xl border transition-all duration-300 relative overflow-hidden ${
-                  exp.isCurrent
-                    ? "border-cyan-500/40 shadow-xl shadow-cyan-950/20 bg-slate-900/80"
-                    : "border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/60"
-                }`}
-              >
-                {/* Glowing subtle gradient line on top */}
-                {exp.isCurrent && (
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500" />
-                )}
+                      <h3 className="font-display font-bold text-xl sm:text-2xl text-white">
+                        {item.role}
+                      </h3>
 
-                {/* Top Row: Role, Company & Badges */}
-                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-5">
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <span className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-slate-800 text-cyan-300 border border-slate-700 flex items-center gap-1.5">
-                        <FiBriefcase size={12} />
-                        {exp.employmentType}
-                      </span>
-                      {exp.badge && (
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 ${
-                            exp.isCurrent
-                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
-                              : "bg-blue-500/10 text-blue-300 border border-blue-500/20"
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-sm font-mono">
+                        <span className="text-neutral-200">{item.company}</span>
+                        {item.client && (
+                          <>
+                            <span className="text-neutral-400">→</span>
+                            <span className="text-amber-400 font-medium">{item.client}</span>
+                          </>
+                        )}
+                      </div>
+
+                      {item.project && (
+                        <p className="mt-2 text-xs font-mono text-neutral-400">
+                          PLATFORM: <strong className="text-white">{item.project}</strong>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="text-xs font-mono text-neutral-400 shrink-0 lg:text-right">
+                    <span>LOCATION: {item.location}</span>
+                  </div>
+                </div>
+
+                {/* Lead Summary */}
+                <div className="p-6 sm:p-8 pb-4">
+                  <p className="text-sm sm:text-base text-neutral-300 leading-relaxed font-light">
+                    {item.leadSummary}
+                  </p>
+                </div>
+
+                {/* Deep Dive Tabs for BNI / NTT DATA role */}
+                {item.deepDiveTabs.length > 1 ? (
+                  <div className="px-6 sm:px-8 pb-6">
+                    {/* Tab Selectors */}
+                    <div className="flex flex-wrap gap-2 mb-4 border-b border-white/10 pb-3">
+                      {item.deepDiveTabs.map((tab, tIdx) => (
+                        <button
+                          key={tab.label}
+                          onClick={() => {
+                            sound.playTick();
+                            setActiveTab(tIdx);
+                          }}
+                          className={`px-3 py-1.5 rounded text-xs font-mono transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+                            activeTab === tIdx
+                              ? "bg-amber-400 text-neutral-950 font-bold"
+                              : "bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10"
                           }`}
                         >
-                          {exp.isCurrent && (
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                          )}
-                          {exp.badge}
-                        </span>
-                      )}
+                          {tab.icon}
+                          <span>{tab.label}</span>
+                        </button>
+                      ))}
                     </div>
 
-                    <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                      {exp.role}
-                    </h3>
-
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-sm text-slate-300">
-                      <div className="flex items-center gap-1.5 font-semibold text-white">
-                        <RiBuilding4Line className="text-cyan-400" size={16} />
-                        <span>{exp.company}</span>
-                      </div>
-                      {exp.client && (
-                        <div className="flex items-center gap-1.5 font-medium text-cyan-300">
-                          <RiBankFill className="text-blue-400" size={16} />
-                          <span>Client: {exp.client}</span>
-                        </div>
-                      )}
+                    {/* Active Tab Content */}
+                    <div className="p-4 sm:p-5 rounded-xl bg-white/[0.02] border border-white/10">
+                      <h4 className="text-xs font-mono text-amber-400 uppercase tracking-wider mb-3">
+                        // {item.deepDiveTabs[activeTab].title}
+                      </h4>
+                      <ul className="space-y-2.5">
+                        {item.deepDiveTabs[activeTab].points.map((pt, pIdx) => (
+                          <li key={pIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed">
+                            <span className="text-amber-400 mt-1 shrink-0">›</span>
+                            <span>{pt}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-
-                    {exp.project && (
-                      <div className="mt-2 text-xs sm:text-sm font-mono text-cyan-400/90 bg-cyan-950/30 border border-cyan-800/30 rounded-lg px-3 py-1.5 inline-block">
-                        Project: {exp.project}
-                      </div>
-                    )}
                   </div>
-
-                  {/* Period & Location Badge */}
-                  <div className="flex lg:flex-col items-start lg:items-end gap-2 text-xs font-mono text-slate-400 shrink-0">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-200">
-                      <FiCalendar className="text-cyan-400" size={13} />
-                      {exp.period}
-                    </span>
-                    <span className="inline-flex items-center gap-1 text-slate-400">
-                      <FiMapPin size={12} />
-                      {exp.location}
-                    </span>
+                ) : (
+                  <div className="px-6 sm:px-8 pb-6">
+                    <div className="p-4 sm:p-5 rounded-xl bg-white/[0.02] border border-white/10">
+                      <ul className="space-y-2">
+                        {item.deepDiveTabs[0].points.map((pt, pIdx) => (
+                          <li key={pIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed">
+                            <span className="text-amber-400 mt-1 shrink-0">›</span>
+                            <span>{pt}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                </div>
+                )}
 
-                {/* Brief Summary */}
-                <p className="text-sm sm:text-base text-slate-300 leading-relaxed mb-6 font-normal">
-                  {exp.description}
-                </p>
-
-                {/* Responsibilities List */}
-                <div className="space-y-3 mb-6">
-                  <p className="text-xs uppercase font-mono tracking-wider text-slate-400 font-semibold">
-                    Key Responsibilities & Contributions:
-                  </p>
-                  <ul className="grid grid-cols-1 gap-2.5">
-                    {exp.responsibilities.map((resp, rIdx) => (
-                      <li
-                        key={rIdx}
-                        className="flex items-start gap-3 text-xs sm:text-sm text-slate-300 leading-relaxed"
-                      >
-                        <FiCheckCircle className="text-cyan-400 mt-1 shrink-0" size={15} />
-                        <span>{resp}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Tech Stack Badges */}
-                <div className="pt-5 border-t border-slate-800/80">
-                  <div className="flex flex-wrap gap-2 items-center">
-                    <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider mr-1">
-                      Tech & Tools:
+                {/* Card Footer Stack Badges */}
+                <div className="px-6 sm:px-8 py-4 bg-white/[0.02] border-t border-white/10 flex flex-wrap gap-2 items-center font-mono text-xs">
+                  <span className="text-neutral-400 text-[10px] uppercase tracking-wider mr-2">
+                    TOOLCHAIN:
+                  </span>
+                  {item.techStack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2 py-0.5 rounded bg-white/5 text-neutral-300 border border-white/5 text-[11px]"
+                    >
+                      {tech}
                     </span>
-                    {exp.skills.map((skill, sIdx) => (
-                      <span
-                        key={sIdx}
-                        className="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800/90 text-slate-200 border border-slate-700/70 hover:border-cyan-500/40 hover:text-cyan-300 transition-colors"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
+                  ))}
                 </div>
               </div>
-            </motion.div>
+            </Parallax>
           ))}
         </div>
       </div>

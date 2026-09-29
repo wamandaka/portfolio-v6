@@ -1,41 +1,37 @@
 import React from "react";
+import SmoothScrollProvider from "./components/ui/SmoothScroll";
+import NoiseGrain from "./components/ui/NoiseGrain";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import Footer from "./components/Footer";
-import PageContainer from "./components/PageContainer";
-import ScrollLinked from "./components/ui/framer-motion/ScrollLinked";
-import AmbientBackground from "./components/ui/AmbientBackground";
 
-const App: React.FC = () => {
+export const App: React.FC = () => {
   return (
-    <div className="min-h-screen bg-[#070b14] text-slate-100 relative overflow-x-hidden">
-      {/* Scroll progress bar */}
-      <ScrollLinked />
+    <SmoothScrollProvider>
+      <div className="min-h-screen bg-[#08090d] text-neutral-100 relative selection:bg-amber-400 selection:text-neutral-950 font-sans">
+        {/* Analog film grain & architectural guide grid */}
+        <NoiseGrain />
 
-      {/* Atmospheric ambient lighting */}
-      <AmbientBackground />
+        {/* Tactical navigation & real-time ribbon */}
+        <Navbar />
 
-      {/* Floating navigation dock */}
-      <Navbar />
-
-      {/* Main page content */}
-      <main className="relative z-10">
-        <PageContainer>
+        {/* Main Fluid Scroll Sections */}
+        <main className="relative z-10">
           <Hero />
           <About />
           <Experience />
           <Projects />
-        </PageContainer>
-      </main>
+        </main>
 
-      {/* Contact & Footer section */}
-      <div className="relative z-10">
-        <Footer />
+        {/* Transmission & Colophon */}
+        <div className="relative z-10">
+          <Footer />
+        </div>
       </div>
-    </div>
+    </SmoothScrollProvider>
   );
 };
 

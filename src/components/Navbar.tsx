@@ -1,168 +1,245 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import { FiArrowUpRight, FiMail } from "react-icons/fi";
+import { FiVolume2, FiVolumeX, FiCornerDownRight, FiSend } from "react-icons/fi";
+import { sound } from "./ui/AudioHelper";
+import { useSmoothScroll } from "./ui/SmoothScrollContext";
 
-const items = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience", highlight: true },
-  { label: "Projects", href: "#project" },
-  { label: "Contact", href: "#contact" },
+const navItems = [
+  { label: "INDEX", id: "home", number: "01" },
+  { label: "PROFILE", id: "about", number: "02" },
+  { label: "ENTERPRISE", id: "experience", number: "03", highlight: true },
+  { label: "SELECTED WORKS", id: "project", number: "04" },
+  { label: "TRANSMIT", id: "contact", number: "05" },
 ];
 
-const Navbar = () => {
-  const [isOpen, setIsNav] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
+export const Navbar: React.FC = () => {
+  const [time, setTime] = useState<string>("");
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [activeSection, setActiveSection] = useState<string>("home");
+  const { scrollTo } = useSmoothScroll();
 
+  // Real-time Jakarta WIB clock
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
+    const updateTime = () => {
+      try {
+        const now = new Date();
+        const str = new Intl.DateTimeFormat("en-US", {
+          timeZone: "Asia/Jakarta",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        }).format(now);
+        setTime(`${str} WIB`);
+      } catch {
+        setTime("JAKARTA");
+      }
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-      // Section spy
+  // Robust scroll spy using getBoundingClientRect (immune to offsetTop transform bugs)
+  useEffect(() => {
+    const checkActiveSection = () => {
+      const scrollBottom = window.innerHeight + window.scrollY;
+      const docHeight = document.documentElement.scrollHeight;
+
+      // Bottom of page detection guarantees TRANSMIT lights up
+      if (scrollBottom >= docHeight - 120) {
+        setActiveSection("contact");
+        return;
+      }
+
       const sections = ["home", "about", "experience", "project", "contact"];
-      const scrollPos = window.scrollY + 200;
-
-      for (const section of sections) {
-        const el = document.getElementById(section);
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const id = sections[i];
+        const el = document.getElementById(id);
         if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(section);
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= window.innerHeight * 0.45) {
+            setActiveSection(id);
             break;
           }
         }
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", checkActiveSection, { passive: true });
+    checkActiveSection();
+    return () => window.removeEventListener("scroll", checkActiveSection);
   }, []);
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
+  const toggleSound = () => {
+    sound.enabled = !soundEnabled;
+    setSoundEnabled(!soundEnabled);
+    if (!soundEnabled) {
+      sound.playTick();
     }
-    return () => {
-      document.body.classList.remove("overflow-hidden");
-    };
-  }, [isOpen]);
+  };
 
-  const toggleNav = () => setIsNav(!isOpen);
+  const handleNavClick = (id: string) => {
+    sound.playTick();
+    setActiveSection(id);
+    setMenuOpen(false);
+
+    const el = document.getElementById(id);
+    if (el) {
+      scrollTo(el, {
+        offset: id === "contact" ? 0 : -80,
+        duration: 1.2,
+      });
+    }
+  };
 
   return (
     <>
-      <header
-        className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-5xl transition-all duration-300 ${
-          scrolled ? "top-3" : "top-5"
-        }`}
-      >
-        <nav className="glass-panel rounded-full px-4 sm:px-6 py-2.5 sm:py-3 shadow-2xl shadow-cyan-950/20 border border-slate-700/50 flex items-center justify-between">
-          {/* Logo / Brand */}
-          <a
-            href="#home"
-            className="flex items-center gap-2 group transition-transform duration-300 hover:scale-105"
-          >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-md shadow-cyan-500/30">
-              W
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-base sm:text-lg tracking-tight text-white group-hover:text-cyan-400 transition-colors">
-                Daka<span className="text-cyan-400">.</span>
+      {/* Top Header & Sticky Navigation Bar */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#08090d]/90 backdrop-blur-xl border-b border-white/10 select-none">
+        {/* Top Info Ribbon */}
+        <div className="border-b border-white/5 py-1.5 px-4 sm:px-8 text-[11px] font-mono text-neutral-400">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-white font-semibold tracking-wider">
+                DAKA WARDANI
+              </span>
+              <span className="hidden sm:inline text-neutral-400">
+                // FRONTEND SPECIALIST
               </span>
             </div>
+
+            <div className="hidden lg:flex items-center gap-2 text-neutral-400">
+              <span className="text-neutral-400">[ DEPLOYMENT:</span>
+              <span className="text-amber-400 font-medium">BNI × NTT DATA INDONESIA</span>
+              <span className="text-neutral-400">]</span>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <span className="text-neutral-400 hidden xs:inline">{time}</span>
+              <button
+                onClick={toggleSound}
+                className="flex items-center gap-1.5 px-2 py-0.5 rounded border border-white/10 hover:border-amber-400/50 hover:text-amber-300 transition-colors cursor-pointer"
+                title="Toggle tactile sound feedback"
+              >
+                {soundEnabled ? <FiVolume2 size={12} /> : <FiVolumeX size={12} />}
+                <span className="text-[10px]">{soundEnabled ? "SND: ON" : "SND: OFF"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Nav Bar */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex items-center justify-between">
+          <a
+            href="#home"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavClick("home");
+            }}
+            className="flex items-center gap-2 font-display font-extrabold text-xl text-white hover:text-amber-400 transition-colors cursor-pointer"
+          >
+            <span>DAKA</span>
+            <span className="text-amber-400">.</span>
           </a>
 
-          {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center gap-1 lg:gap-2">
-            {items.map((item) => {
-              const isActive = activeSection === item.href.replace("#", "");
+          {/* Desktop Navigation Links */}
+          <nav className="hidden md:flex items-center gap-1 font-mono text-xs">
+            {navItems.map((item) => {
+              const isActive = activeSection === item.id;
               return (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-200 relative flex items-center gap-1.5 ${
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`px-3.5 py-1.5 rounded-lg transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                     isActive
-                      ? "text-cyan-300 bg-cyan-500/10 shadow-sm shadow-cyan-500/20"
-                      : "text-slate-300 hover:text-white hover:bg-white/5"
+                      ? "bg-amber-400 text-neutral-950 font-bold shadow-md shadow-amber-400/20"
+                      : "text-neutral-300 hover:text-white hover:bg-white/5"
                   }`}
                 >
-                  {item.label}
-                  {item.highlight && (
-                    <span className="flex h-2 w-2 relative">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-                    </span>
+                  <span className={`text-[10px] ${isActive ? "text-neutral-800" : "text-neutral-400"}`}>
+                    {item.number}
+                  </span>
+                  <span>{item.label}</span>
+                  {item.highlight && !isActive && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
                   )}
-                </a>
+                </button>
               );
             })}
-          </div>
+          </nav>
 
-          {/* Desktop Action CTA */}
+          {/* Direct CTA button */}
           <div className="hidden md:flex items-center gap-3">
-            <a
-              href="mailto:wamandaka122@gmail.com"
-              className="px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-slate-900 bg-gradient-to-r from-cyan-400 to-blue-400 hover:from-cyan-300 hover:to-blue-300 shadow-md shadow-cyan-500/25 transition-all duration-300 hover:scale-105 flex items-center gap-1.5"
-            >
-              <FiMail className="text-sm" />
-              <span>Get in Touch</span>
-            </a>
-          </div>
-
-          {/* Mobile Hamburger Button */}
-          <div className="md:hidden flex items-center gap-2">
-            <a
-              href="mailto:wamandaka122@gmail.com"
-              className="p-2 rounded-full text-slate-900 bg-cyan-400 hover:bg-cyan-300 transition-colors"
-              aria-label="Email Waman Daka"
-            >
-              <FiMail size={16} />
-            </a>
             <button
-              onClick={toggleNav}
-              className="p-2 rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-colors focus:outline-none"
-              aria-label="Toggle navigation menu"
+              onClick={() => handleNavClick("contact")}
+              className={`px-4 py-1.5 rounded font-mono text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
+                activeSection === "contact"
+                  ? "bg-white text-neutral-950 shadow-lg"
+                  : "bg-amber-400 text-neutral-950 hover:bg-amber-300 shadow-md shadow-amber-400/20"
+              }`}
             >
-              {isOpen ? <AiOutlineClose size={22} /> : <HiOutlineMenuAlt3 size={22} />}
+              <FiSend size={12} />
+              <span>TRANSMIT</span>
             </button>
           </div>
-        </nav>
+
+          {/* Mobile Hamburger Trigger */}
+          <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={() => handleNavClick("contact")}
+              className="px-3 py-1 rounded bg-amber-400 text-neutral-950 font-mono text-[11px] font-bold uppercase"
+            >
+              TRANSMIT
+            </button>
+            <button
+              onClick={() => {
+                sound.playTick();
+                setMenuOpen(!menuOpen);
+              }}
+              className="p-2 rounded border border-white/10 text-neutral-200 hover:text-white"
+              aria-label="Toggle navigation menu"
+            >
+              {menuOpen ? <AiOutlineClose size={18} /> : <HiOutlineMenuAlt3 size={18} />}
+            </button>
+          </div>
+        </div>
       </header>
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed inset-0 z-40 bg-slate-950/90 backdrop-blur-2xl transition-all duration-300 md:hidden flex flex-col justify-center px-8 ${
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 z-40 bg-[#08090d]/95 backdrop-blur-2xl transition-all duration-300 md:hidden flex flex-col justify-center px-8 ${
+          menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
-        <div className="flex flex-col gap-6 max-w-sm mx-auto w-full">
-          <div className="text-xs uppercase tracking-widest text-slate-400 mb-2 font-mono">
-            Navigation
+        <div className="flex flex-col gap-6 max-w-sm mx-auto w-full font-mono">
+          <div className="text-xs uppercase text-neutral-400 tracking-widest border-b border-white/10 pb-2 flex justify-between">
+            <span>// INDEX REGISTRY</span>
+            <button onClick={() => setMenuOpen(false)} className="text-neutral-400 hover:text-white">
+              CLOSE [X]
+            </button>
           </div>
-          {items.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              onClick={toggleNav}
-              className="text-2xl font-semibold text-slate-200 hover:text-cyan-400 transition-colors flex items-center justify-between border-b border-slate-800/80 pb-3"
+
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleNavClick(item.id)}
+              className="text-xl font-display font-bold text-neutral-200 hover:text-amber-400 flex items-center justify-between border-b border-white/5 pb-3 transition-colors text-left cursor-pointer"
             >
-              <span>{item.label}</span>
-              <FiArrowUpRight className="text-slate-500 text-lg" />
-            </a>
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-mono text-neutral-400">{item.number}</span>
+                <span>{item.label}</span>
+              </div>
+              <FiCornerDownRight className="text-neutral-400 text-base" />
+            </button>
           ))}
-          <a
-            href="mailto:wamandaka122@gmail.com"
-            onClick={toggleNav}
-            className="mt-4 w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-bold text-center shadow-lg shadow-cyan-500/30 flex items-center justify-center gap-2"
-          >
-            <FiMail />
-            <span>Contact Me directly</span>
-          </a>
+
+          <div className="pt-4 text-xs font-mono text-neutral-400">
+            DEPLOYED AT BNI // JAKARTA, INDONESIA
+          </div>
         </div>
       </div>
     </>

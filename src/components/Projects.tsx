@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import * as motion from "motion/react-client";
-import { FiExternalLink, FiLock } from "react-icons/fi";
+import { FiArrowUpRight, FiLock } from "react-icons/fi";
+import { sound } from "./ui/AudioHelper";
+import { Parallax, ParallaxImage } from "./ui/Parallax";
 
 import BniMoveHubImg from "../assets/projects/bnimove-hub.jpg";
 import WeatherApp from "../assets/projects/weather-app.png";
@@ -8,269 +9,282 @@ import DashboardIuran from "../assets/projects/dashboard-jakmen.png";
 import viptiket from "../assets/projects/viptiket.png";
 import MovieApp from "../assets/projects/movie-app.png";
 
-interface ProjectItem {
+interface ProjectEntry {
+  id: string;
   name: string;
   category: "Enterprise" | "Web App" | "Dashboard" | "Utility";
-  badge?: string;
   isEnterprise?: boolean;
-  description: string;
-  features: string[];
-  imageUrl: string;
+  client?: string;
+  summary: string;
+  highlights: string[];
+  image: string;
   tags: string[];
   link?: string;
-  github?: string;
-  client?: string;
 }
 
-const listProjects: ProjectItem[] = [
+const projects: ProjectEntry[] = [
   {
-    name: "BNIMove HUB - Enterprise Mobility Platform",
+    id: "01",
+    name: "BNIMove HUB — Enterprise Mobility Platform",
     category: "Enterprise",
-    badge: "Enterprise Banking",
     isEnterprise: true,
     client: "PT Bank Negara Indonesia (Persero) Tbk (via NTT DATA Indonesia)",
-    description:
-      "Enterprise-grade workforce mobility and internal operations platform engineered for nationwide banking operational efficiency, high reliability, and streamlined employee administration.",
-    features: [
-      "Modular dashboard architecture with role-based access control (RBAC)",
+    summary:
+      "Enterprise digital mobility platform enabling bank-wide internal operations, workforce task orchestration, and departmental analytics with strict banking security compliance.",
+    highlights: [
+      "Modular dashboard architecture with Role-Based Access Control (RBAC)",
       "High-reliability enterprise REST microservices integration & caching",
-      "Adheres strictly to enterprise digital banking design standards and governance",
+      "Strict compliance with national banking IT digital governance",
     ],
-    imageUrl: BniMoveHubImg,
-    tags: ["React", "TypeScript", "TailwindCSS", "REST APIs", "Micro-frontend", "Enterprise Security"],
+    image: BniMoveHubImg,
+    tags: ["React 19", "TypeScript", "TailwindCSS", "REST APIs", "Microservices", "Enterprise Security"],
   },
   {
-    name: "VIP Tiket - Online Event Ticketing",
+    id: "02",
+    name: "VIP Tiket — Online Event Ticketing",
     category: "Web App",
-    badge: "Commercial Platform",
-    description:
-      "Full-featured event ticketing web application offering seamless event browsing, seat selection, checkout workflows, and administrative event control.",
-    features: [
-      "Dynamic ticket purchasing & booking flow",
-      "Responsive event showcase and discovery system",
-      "Optimized server-side and client rendering via Next.js",
+    summary:
+      "Commercial ticketing web application featuring rapid event catalog browsing, seat reservation, checkout pipelines, and organizer dashboard.",
+    highlights: [
+      "Dynamic purchasing & seat reservation pipeline",
+      "SSR / SSG performance rendering with Next.js",
+      "Responsive event catalog with live filtering",
     ],
-    imageUrl: viptiket,
+    image: viptiket,
     tags: ["Next.js", "React", "TailwindCSS", "RESTful API", "Axios"],
   },
   {
-    name: "Cinema Explorer - TMDB Movie Discovery",
+    id: "03",
+    name: "Cinema Explorer — TMDB Discovery Engine",
     category: "Web App",
-    badge: "Entertainment API",
-    description:
-      "Interactive movie streaming and discovery web app powered by TMDB API with real-time search, category filters, and rich media details.",
-    features: [
-      "Real-time search and filter with instant feedback",
-      "Detailed synopsis, cast, ratings, and video preview modals",
-      "Responsive dark aesthetic interface with smooth micro-interactions",
+    summary:
+      "High-speed cinematic discovery and media streaming interface integrated with TMDB API, featuring instant search, detail modals, and trailer feeds.",
+    highlights: [
+      "Real-time debounced search & category discovery",
+      "Video modal popouts and cast relationship views",
+      "Fluid responsive dark mode layout",
     ],
-    imageUrl: MovieApp,
-    tags: ["ReactJS", "TMDB API", "TailwindCSS", "Axios", "Responsive UI"],
+    image: MovieApp,
+    tags: ["ReactJS", "TMDB API", "TailwindCSS", "Axios"],
     link: "https://seryu-movie-app.netlify.app/",
   },
   {
-    name: "Dashboard Iuran Warga",
+    id: "04",
+    name: "Dashboard Iuran Warga — Community Dues Tracker",
     category: "Dashboard",
-    badge: "Finance & Analytics",
-    description:
-      "Interactive community dues management and finance monitoring dashboard featuring real-time revenue analytics, member tracking, and payment status filters.",
-    features: [
-      "Revenue trend graphs and member payment breakdown charts",
-      "Quick filter and search across community resident records",
-      "Modern clean administrative layout and financial summaries",
+    summary:
+      "Interactive administrative finance portal for community housing dues management, revenue timeline visualization, and resident payment status tracking.",
+    highlights: [
+      "Revenue trend analytics and payment breakdowns",
+      "Instant resident filter and status verification",
+      "Minimalist data-dense administrative UI",
     ],
-    imageUrl: DashboardIuran,
+    image: DashboardIuran,
     tags: ["ReactJS", "Data Visualization", "TailwindCSS", "State Management"],
     link: "https://iuran-warga.netlify.app/",
   },
   {
-    name: "Weather Radar & Forecast App",
+    id: "05",
+    name: "Weather Radar & Forecast Radar",
     category: "Utility",
-    badge: "Real-time API",
-    description:
-      "Dynamic meteorological application delivering real-time weather forecasts, humidity, wind conditions, and atmospheric data by city.",
-    features: [
+    summary:
+      "Meteorological utility providing real-time local weather observations, atmospheric pressure, wind telemetry, and multi-day forecast curves.",
+    highlights: [
       "Instant city search with OpenWeather API integration",
-      "Dynamic visual atmospheric backgrounds based on conditions",
-      "High-speed data retrieval with cached responses",
+      "Dynamic meteorological cards and condition icons",
+      "Optimized client caching for zero redundant calls",
     ],
-    imageUrl: WeatherApp,
+    image: WeatherApp,
     tags: ["ReactJS", "OpenWeather API", "Axios", "TailwindCSS"],
     link: "https://wamandaka.github.io/react-app-weatherapp",
   },
 ];
 
-const categories = ["All", "Enterprise", "Web App", "Dashboard", "Utility"] as const;
+const categories = ["ALL", "ENTERPRISE", "WEB APP", "DASHBOARD", "UTILITY"] as const;
 
-const Projects: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<string>("All");
+export const Projects: React.FC = () => {
+  const [filter, setFilter] = useState<string>("ALL");
 
-  const filteredProjects =
-    activeCategory === "All"
-      ? listProjects
-      : listProjects.filter((p) => p.category === activeCategory);
+  const filtered =
+    filter === "ALL"
+      ? projects
+      : projects.filter((p) => p.category.toUpperCase() === filter);
+
+  const enterpriseProject = filtered.find((p) => p.isEnterprise);
+  const otherProjects = filtered.filter((p) => !p.isEnterprise);
 
   return (
-    <section id="project" className="py-20 relative">
-      <div className="flex flex-col gap-12">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto">
-          <p className="text-xs font-mono uppercase tracking-widest text-cyan-400 font-semibold mb-2">
-            Portfolio & Selected Works
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Featured <span className="gradient-accent">Projects & Systems</span>
+    <section id="project" className="py-24 sm:py-32 relative border-t border-white/5 overflow-hidden scroll-mt-28">
+      {/* Background Parallax Watermark */}
+      <Parallax speed={-100} className="absolute top-16 left-[-4%] select-none pointer-events-none z-0">
+        <span
+          className="font-display font-black text-[130px] sm:text-[220px] md:text-[320px] text-white/[0.015] leading-none block"
+          aria-hidden="true"
+        >
+          WORKS
+        </span>
+      </Parallax>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
+        {/* Section Index Marker */}
+        <div className="flex items-center gap-3 font-mono text-xs text-neutral-400 mb-4 uppercase tracking-widest">
+          <span className="text-amber-400">04 //</span>
+          <span>SELECTED WORKS & EXHIBITION</span>
+        </div>
+
+        {/* Header with Category Filter */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+          <h2 className="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl text-white tracking-tight uppercase max-w-2xl leading-[1.05]">
+            Engineered for <span className="text-amber-400">Impact</span> & Scale.
           </h2>
-          <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
-            From large-scale enterprise banking platforms to performant consumer web applications and interactive dashboards.
-          </p>
-        </div>
 
-        {/* Filter Tabs */}
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 cursor-pointer ${
-                activeCategory === cat
-                  ? "bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-semibold shadow-md shadow-cyan-500/25"
-                  : "glass-panel text-slate-300 hover:text-white hover:bg-slate-800/80 border border-slate-800"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-          {filteredProjects.map((project, idx) => (
-            <motion.div
-              key={project.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className={`glass-panel rounded-3xl overflow-hidden border transition-all duration-300 flex flex-col justify-between group ${
-                project.isEnterprise
-                  ? "border-cyan-500/40 md:col-span-2 shadow-xl shadow-cyan-950/20 bg-slate-900/85"
-                  : "border-slate-800 hover:border-cyan-500/30 hover:-translate-y-1 shadow-lg hover:shadow-cyan-950/20"
-              }`}
-            >
-              {/* Card Image Banner */}
-              <div
-                className={`relative overflow-hidden bg-slate-950 ${
-                  project.isEnterprise ? "h-64 sm:h-80 md:h-96" : "h-56 sm:h-64"
+          {/* Tactical Filters */}
+          <div className="flex flex-wrap gap-2 font-mono text-xs">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => {
+                  sound.playTick();
+                  setFilter(cat);
+                }}
+                className={`px-3 py-1.5 rounded transition-all duration-200 cursor-pointer ${
+                  filter === cat
+                    ? "bg-amber-400 text-neutral-950 font-bold shadow-md shadow-amber-400/20"
+                    : "bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10"
                 }`}
               >
-                <img
-                  src={project.imageUrl}
-                  alt={project.name}
-                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
 
-                {/* Subtle Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
-
-                {/* Top Badges */}
-                <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md shadow-md ${
-                      project.isEnterprise
-                        ? "bg-cyan-500/90 text-slate-950 font-bold"
-                        : "bg-slate-900/80 text-cyan-300 border border-slate-700/60"
-                    }`}
-                  >
-                    {project.badge || project.category}
-                  </span>
-
-                  {project.isEnterprise && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium bg-slate-900/85 text-emerald-400 border border-emerald-500/30 backdrop-blur-md">
-                      <FiLock size={11} />
-                      <span>Enterprise Platform</span>
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Card Body */}
-              <div className="p-6 sm:p-8 flex flex-col flex-grow justify-between gap-5">
-                <div>
-                  {project.client && (
-                    <p className="text-xs font-mono text-cyan-400 mb-1.5">
-                      Client: {project.client}
-                    </p>
-                  )}
-
-                  <div className="flex items-start justify-between gap-3 mb-2">
-                    <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors">
-                      {project.name}
-                    </h3>
+        {/* Flagship Enterprise Card: BNIMove HUB with Parallax Window */}
+        {enterpriseProject && (
+          <div className="mb-14">
+            <div className="editorial-card rounded-3xl border border-amber-400/40 overflow-hidden shadow-2xl shadow-amber-950/20 group">
+              <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
+                {/* Image Frame with Parallax Image Shift */}
+                <div className="lg:col-span-7 relative h-72 sm:h-96 lg:h-auto overflow-hidden bg-neutral-950">
+                  <ParallaxImage
+                    src={enterpriseProject.image}
+                    alt={enterpriseProject.name}
+                    speed={35}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-neutral-950/80 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute top-4 left-4 px-3 py-1 rounded bg-black/80 backdrop-blur-md font-mono text-xs text-amber-400 border border-amber-400/30 flex items-center gap-1.5 z-10">
+                    <FiLock size={12} />
+                    <span>ENTERPRISE BANKING PLATFORM</span>
                   </div>
+                </div>
 
-                  <p className="text-sm text-slate-300 leading-relaxed mb-4">
-                    {project.description}
-                  </p>
+                {/* Card Editorial Info */}
+                <div className="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-between">
+                  <div>
+                    <div className="font-mono text-xs text-neutral-400 mb-2">
+                      [{enterpriseProject.id}] // ENTERPRISE FLAGSHIP
+                    </div>
 
-                  {/* Highlights/Features */}
-                  {project.features && (
-                    <div className="space-y-1.5 mb-4">
-                      {project.features.map((feat, fIdx) => (
-                        <div
-                          key={fIdx}
-                          className="flex items-center gap-2 text-xs text-slate-400"
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
-                          <span>{feat}</span>
+                    {enterpriseProject.client && (
+                      <p className="font-mono text-xs text-amber-400 mb-2 font-medium">
+                        CLIENT: {enterpriseProject.client}
+                      </p>
+                    )}
+
+                    <h3 className="font-display font-bold text-2xl sm:text-3xl text-white mb-4 group-hover:text-amber-300 transition-colors">
+                      {enterpriseProject.name}
+                    </h3>
+
+                    <p className="text-sm text-neutral-300 leading-relaxed font-light mb-6">
+                      {enterpriseProject.summary}
+                    </p>
+
+                    <div className="space-y-2 mb-6 font-mono text-xs text-neutral-400">
+                      {enterpriseProject.highlights.map((h, hIdx) => (
+                        <div key={hIdx} className="flex items-start gap-2">
+                          <span className="text-amber-400">›</span>
+                          <span className="text-neutral-300">{h}</span>
                         </div>
                       ))}
                     </div>
-                  )}
-                </div>
+                  </div>
 
-                {/* Footer with Tags & Actions */}
-                <div className="pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  {/* Tech Tags */}
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.tags.map((tag, tIdx) => (
+                  <div className="border-t border-white/10 pt-4 flex flex-wrap gap-1.5">
+                    {enterpriseProject.tags.map((tag) => (
                       <span
-                        key={tIdx}
-                        className="px-2.5 py-0.5 rounded-md text-[11px] font-mono bg-slate-800 text-slate-300 border border-slate-700/60"
+                        key={tag}
+                        className="px-2 py-0.5 rounded bg-white/5 text-[11px] font-mono text-neutral-300 border border-white/5"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
-
-                  {/* Action Link */}
-                  <div className="flex items-center gap-2 shrink-0">
-                    {project.link ? (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-900 bg-cyan-400 hover:bg-cyan-300 transition-colors flex items-center gap-1.5 shadow-md shadow-cyan-500/20"
-                      >
-                        <span>Live Preview</span>
-                        <FiExternalLink size={13} />
-                      </a>
-                    ) : project.isEnterprise ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono text-slate-400 bg-slate-800/80 border border-slate-700">
-                        <FiLock size={12} className="text-cyan-400" />
-                        <span>Internal Banking System</span>
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-mono text-slate-400 bg-slate-800/80 border border-slate-700">
-                        <span>Production Release</span>
-                      </span>
-                    )}
-                  </div>
                 </div>
               </div>
-            </motion.div>
-          ))}
+            </div>
+          </div>
+        )}
+
+        {/* Asymmetric 2-Column Parallax Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          {otherProjects.map((proj, idx) => {
+            const isEven = idx % 2 === 0;
+            return (
+              <Parallax key={proj.id} speed={isEven ? 25 : -25} className="w-full">
+                <div className="editorial-card rounded-2xl border border-white/10 hover:border-white/20 overflow-hidden flex flex-col justify-between group transition-all duration-300 shadow-xl">
+                  {/* Image Frame with Parallax Image Shift */}
+                  <div className="relative h-60 sm:h-72 overflow-hidden bg-neutral-950">
+                    <ParallaxImage
+                      src={proj.image}
+                      alt={proj.name}
+                      speed={25}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent pointer-events-none" />
+
+                    <div className="absolute top-4 left-4 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md font-mono text-[10px] text-neutral-300 border border-white/10 z-10">
+                      [{proj.id}] // {proj.category.toUpperCase()}
+                    </div>
+
+                    {proj.link && (
+                      <a
+                        href={proj.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => sound.playTick()}
+                        className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white text-neutral-950 flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110 z-10"
+                        aria-label="Open live preview"
+                      >
+                        <FiArrowUpRight size={16} />
+                      </a>
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6 sm:p-7 flex flex-col justify-between flex-grow">
+                    <div>
+                      <h3 className="font-display font-bold text-xl text-white mb-2 group-hover:text-amber-300 transition-colors">
+                        {proj.name}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-light mb-4">
+                        {proj.summary}
+                      </p>
+                    </div>
+
+                    <div className="border-t border-white/10 pt-4 flex flex-wrap gap-1.5 font-mono">
+                      {proj.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-neutral-400 border border-white/5"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Parallax>
+            );
+          })}
         </div>
       </div>
     </section>
