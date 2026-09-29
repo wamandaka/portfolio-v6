@@ -20,10 +20,10 @@ export default function ScrollLinked() {
           top: 0,
           left: 0,
           right: 0,
-          height: 5,
+          height: 4,
           originX: 0,
           zIndex: 9999,
-          backgroundColor: "#F4631E",
+          background: "linear-gradient(90deg, #06b6d4, #3b82f6, #8b5cf6)",
         }}
       />
     </>

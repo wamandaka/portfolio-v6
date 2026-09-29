@@ -1,44 +1,41 @@
-import Contact from "./components/Footer";
-import Experience from "./components/Experience";
-import Hero from "./components/Hero";
+import React from "react";
 import Navbar from "./components/Navbar";
-import PageContainer from "./components/PageContainer";
+import Hero from "./components/Hero";
+import About from "./components/About";
+import Experience from "./components/Experience";
 import Projects from "./components/Projects";
+import Footer from "./components/Footer";
+import PageContainer from "./components/PageContainer";
 import ScrollLinked from "./components/ui/framer-motion/ScrollLinked";
-// import Particles from "./components/ui/BgParticles";
-// import SplashCursor from "./components/ui/SplashCrusor";
+import AmbientBackground from "./components/ui/AmbientBackground";
 
-const App = () => {
+const App: React.FC = () => {
   return (
-    <>
-      {/* <SplashCursor /> */}
-      <div className="relative">
-        {/* Particles sebagai background */}
-        {/* <Particles
-          particleColors={["#ffffff", "#ffffff"]}
-          particleCount={200}
-          particleSpread={10}
-          speed={0.1}
-          particleBaseSize={100}
-          moveParticlesOnHover={true}
-          alphaParticles={false}
-          disableRotation={false}
-          className="sticky top-0 left-0"
-        > */}
-        {/* Konten utama */}
-        <div className="absolute top-0 left-0 right-0 z-50">
-          <ScrollLinked />
-          <Navbar />
-          <PageContainer>
-            <Hero />
-            <Projects />
-            <Experience />
-          </PageContainer>
-          <Contact />
-        </div>
-        {/* </Particles> */}
+    <div className="min-h-screen bg-[#070b14] text-slate-100 relative overflow-x-hidden">
+      {/* Scroll progress bar */}
+      <ScrollLinked />
+
+      {/* Atmospheric ambient lighting */}
+      <AmbientBackground />
+
+      {/* Floating navigation dock */}
+      <Navbar />
+
+      {/* Main page content */}
+      <main className="relative z-10">
+        <PageContainer>
+          <Hero />
+          <About />
+          <Experience />
+          <Projects />
+        </PageContainer>
+      </main>
+
+      {/* Contact & Footer section */}
+      <div className="relative z-10">
+        <Footer />
       </div>
-    </>
+    </div>
   );
 };
 
