@@ -1,144 +1,85 @@
-import React, { useState } from "react";
-import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
-import { FiCopy, FiCheck, FiArrowUp, FiExternalLink } from "react-icons/fi";
-import { RiSendPlaneFill } from "react-icons/ri";
+import { useEffect, useRef, useState } from "react";
+import { FiArrowUp, FiCheck, FiCopy } from "react-icons/fi";
+import { useLanguage } from "../i18n/useLanguage";
+import { profile } from "../data/profile";
 
-const socials = [
-  {
-    name: "LinkedIn",
-    url: "https://www.linkedin.com/in/wamandaka/",
-    icon: <FaLinkedin size={20} />,
-    handle: "in/wamandaka",
-    color: "hover:text-[#0A66C2]",
-  },
-  {
-    name: "GitHub",
-    url: "https://github.com/wamandaka",
-    icon: <FaGithub size={20} />,
-    handle: "github.com/wamandaka",
-    color: "hover:text-white",
-  },
-  {
-    name: "Instagram",
-    url: "https://www.instagram.com/kang_piscokk/",
-    icon: <FaInstagram size={20} />,
-    handle: "@kang_piscokk",
-    color: "hover:text-[#E4405F]",
-  },
-];
-
-const Footer: React.FC = () => {
+const Footer = () => {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
-  const email = "wamandaka122@gmail.com";
+  const timeoutRef = useRef<number>(undefined);
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
-  };
+  useEffect(() => () => window.clearTimeout(timeoutRef.current), []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = window.setTimeout(() => setCopied(false), 2500);
+    } catch {
+      // Clipboard access can be denied; the mailto link remains available.
+    }
   };
 
   return (
-    <footer id="contact" className="pt-20 pb-12 relative overflow-hidden">
-      {/* Contact CTA Card */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <div className="glass-panel p-8 sm:p-12 md:p-16 rounded-3xl border border-cyan-500/30 relative overflow-hidden text-center shadow-2xl shadow-cyan-950/30">
-          {/* Subtle Glow Orb inside card */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/10 blur-[100px] pointer-events-none rounded-full" />
+    <footer id="contact" aria-labelledby="contact-title" className="border-t border-line bg-ink text-paper">
+      <div className="page-container py-section">
+        <p className="eyebrow mb-4 !text-accent">{t.contact.eyebrow}</p>
+        <h2 id="contact-title" className="max-w-[16ch] text-5xl font-extrabold sm:text-6xl lg:text-7xl">
+          {t.contact.title}
+        </h2>
+        <p className="mt-6 max-w-[56ch] text-lg text-line">{t.contact.description}</p>
 
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-mono text-cyan-300 mb-6">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            Let's Collaborate
-          </span>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4 max-w-2xl mx-auto">
-            Ready to Build <span className="gradient-accent">High-Impact</span> Digital Solutions?
-          </h2>
-
-          <p className="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-8 leading-relaxed">
-            Whether you have an enterprise project inquiry, frontend engineering questions, or want to discuss scalable web solutions — feel free to reach out.
-          </p>
-
-          {/* Action Row */}
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={`mailto:${email}`}
-              className="px-7 py-3.5 rounded-full font-semibold text-sm sm:text-base text-slate-950 bg-gradient-to-r from-cyan-400 to-blue-400 hover:from-cyan-300 hover:to-blue-300 shadow-xl shadow-cyan-500/25 transition-all duration-300 hover:scale-105 flex items-center gap-2"
-            >
-              <RiSendPlaneFill size={18} />
-              <span>Send an Email</span>
-            </a>
-
-            <button
-              onClick={handleCopyEmail}
-              className="px-6 py-3.5 rounded-full font-medium text-sm sm:text-base text-slate-200 glass-panel hover:bg-slate-800/80 border border-slate-700 hover:border-slate-500 shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2 cursor-pointer"
-            >
-              {copied ? (
-                <>
-                  <FiCheck className="text-emerald-400" size={18} />
-                  <span className="text-emerald-300">Email Copied!</span>
-                </>
-              ) : (
-                <>
-                  <FiCopy className="text-cyan-400" size={18} />
-                  <span>Copy: {email}</span>
-                </>
-              )}
-            </button>
-          </div>
-
-          {/* Social Links */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto mt-12 pt-8 border-t border-slate-800/80">
-            {socials.map((social) => (
-              <a
-                key={social.name}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`glass-panel p-4 rounded-2xl border border-slate-800 flex items-center justify-between transition-all duration-300 hover:border-slate-700 hover:bg-slate-800/60 group ${social.color}`}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="text-slate-400 group-hover:scale-110 transition-transform">
-                    {social.icon}
-                  </div>
-                  <div className="text-left">
-                    <p className="text-xs font-semibold text-white group-hover:text-cyan-300 transition-colors">
-                      {social.name}
-                    </p>
-                    <p className="text-[11px] text-slate-400 font-mono truncate max-w-[120px]">
-                      {social.handle}
-                    </p>
-                  </div>
-                </div>
-                <FiExternalLink className="text-slate-500 group-hover:text-slate-300 transition-colors" size={14} />
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Footer Bar */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-slate-800/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-400">
-        <div className="flex items-center gap-2">
-          <span>© {new Date().getFullYear()} Waman Daka Wardani.</span>
-          <span>•</span>
-          <span className="text-cyan-400/80">Enterprise Web Specialist</span>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <span className="text-slate-400">
-            Built with React, TypeScript & Tailwind CSS
-          </span>
-          <button
-            onClick={scrollToTop}
-            className="p-2 rounded-xl glass-panel hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-cyan-400 transition-colors cursor-pointer"
-            aria-label="Back to top"
+        <div className="mt-10 flex flex-wrap items-center gap-4">
+          <a
+            href={`mailto:${profile.email}`}
+            className="btn border-paper bg-paper text-ink hover:border-accent hover:bg-accent"
           >
-            <FiArrowUp size={14} />
+            {t.contact.email}
+          </a>
+          <button
+            type="button"
+            onClick={handleCopyEmail}
+            className="btn cursor-pointer border-line bg-transparent text-paper hover:bg-paper/10"
+          >
+            {copied ? <FiCheck aria-hidden="true" /> : <FiCopy aria-hidden="true" />}
+            <span aria-live="polite">{copied ? t.contact.copied : profile.email}</span>
+            <span className="sr-only">{!copied && ` — ${t.contact.copy}`}</span>
           </button>
+        </div>
+
+        <div className="mt-16 border-t border-paper/20 pt-8">
+          <h3 className="eyebrow mb-4 !text-line">{t.contact.elsewhere}</h3>
+          <ul className="flex flex-wrap gap-x-8 gap-y-3 text-sm font-medium">
+            {profile.socials.map((social) => (
+              <li key={social.name}>
+                <a
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-underline hover:!text-accent"
+                >
+                  {social.name} <span className="text-line">{social.handle}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-paper/20 pt-8 text-sm text-line sm:flex-row sm:items-center">
+          <p>
+            © {new Date().getFullYear()} {profile.name}. {t.footer.rights}
+          </p>
+          <div className="flex items-center gap-4">
+            <p>{t.footer.built}</p>
+            <a
+              href="#home"
+              aria-label={t.footer.top}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-line transition-colors hover:border-accent hover:text-accent"
+            >
+              <FiArrowUp aria-hidden="true" />
+            </a>
+          </div>
         </div>
       </div>
     </footer>

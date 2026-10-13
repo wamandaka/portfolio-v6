@@ -1,73 +1,143 @@
 @import "tailwindcss";
 
+/*
+ * Minimalist editorial design tokens.
+ * Muted text and accent-ink are slightly darker than the base palette so that
+ * small text keeps >= 4.5:1 contrast on the paper background.
+ */
 @theme {
-  --font-sans: "Plus Jakarta Sans", "Poppins", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 
-  --color-primary: #f8fafc;
-  --color-background: #070b14;
-  --color-card: #0f172a;
-  --color-card-border: rgba(255, 255, 255, 0.08);
-  --color-cyan-glow: #06b6d4;
-  --color-indigo-glow: #6366f1;
+  --color-paper: #f3f0e9;
+  --color-ink: #26251f;
+  --color-accent: #d96b43;
+  --color-accent-ink: #b24d28;
+  --color-surface: #e8e3da;
+  --color-muted: #6b655c;
+  --color-line: #d5d0c6;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --spacing-section: clamp(5rem, 10vw, 9rem);
+  --container-page: 72rem;
 }
 
 @layer base {
   html {
     font-family: var(--font-sans);
+    background-color: var(--color-paper);
+    color: var(--color-ink);
     scroll-behavior: smooth;
-    background-color: var(--color-background);
-    color: var(--color-primary);
+    scroll-padding-top: 5rem;
   }
 
-  /* Custom subtle scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+  body {
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
   }
-  ::-webkit-scrollbar-track {
-    background: #070b14;
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
   }
-  ::-webkit-scrollbar-thumb {
-    background: #1e293b;
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent-ink);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .page-container {
+    width: 100%;
+    max-width: var(--container-page);
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 2.5rem);
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent-ink);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
     border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    border: 1px solid var(--color-ink);
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #334155;
+
+  .btn-primary {
+    background: var(--color-ink);
+    color: var(--color-paper);
   }
-}
+  .btn-primary:hover {
+    background: var(--color-accent-ink);
+    border-color: var(--color-accent-ink);
+  }
 
-/* Glassmorphism & Atmospheric utilities */
-.glass-panel {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-ink);
+  }
+  .btn-ghost:hover {
+    background: var(--color-surface);
+  }
 
-.glass-panel-hover {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: color 0.2s ease;
+  }
+  .link-underline:hover {
+    color: var(--color-accent-ink);
+  }
 
-.glass-panel-hover:hover {
-  background: rgba(30, 41, 59, 0.75);
-  border-color: rgba(56, 189, 248, 0.25);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px -10px rgba(6, 182, 212, 0.15);
-}
-
-.glow-cyan {
-  text-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
-}
-
-.gradient-text {
-  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #38bdf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.gradient-accent {
-  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border: 1px solid var(--color-line);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    color: var(--color-muted);
+  }
 }
