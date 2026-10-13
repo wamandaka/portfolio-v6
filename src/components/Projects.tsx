@@ -4,11 +4,11 @@ import { currentProject, featuredProjects, otherProjects } from "../data/project
 
 const Projects = () => {
   const { language, t } = useLanguage();
-  const startDate = new Intl.DateTimeFormat(language === "id" ? "id-ID" : "en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(`${currentProject.startDate}T00:00:00`));
+  // const startDate = new Intl.DateTimeFormat(language === "id" ? "id-ID" : "en-GB", {
+  //   day: "numeric",
+  //   month: "long",
+  //   year: "numeric",
+  // }).format(new Date(`${currentProject.startDate}T00:00:00`));
 
   return (
     <section id="project" aria-labelledby="work-title" className="border-t border-line py-section">
