@@ -38,7 +38,7 @@
 @layer base {
   html {
     font-family: var(--font-sans);
-    background-color: var(--color-bg-dark);
+    background-color: #090d16;
     color: var(--color-text-primary);
     scroll-behavior: smooth;
     color-scheme: dark;
@@ -47,9 +47,10 @@
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--color-bg-dark);
+    background-color: #090d16;
     color: var(--color-text-primary);
     line-height: 1.6;
+    overflow-x: hidden;
   }
 
   ::selection {
@@ -78,26 +79,20 @@
 }
 
 @layer components {
-  /* Centered resume/portfolio container matching Figma's proportions scaled for web */
-  .resume-container {
-    width: 100%;
-    max-width: 56rem; /* 896px */
-    margin-inline: auto;
-    padding-inline: clamp(1.25rem, 5vw, 3.5rem);
-  }
-
   /* Two-column section row matching Figma's Left Section Title (x:501) + Right Content (x:629) */
   .resume-section {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.875rem;
+    padding-inline: clamp(1.25rem, 5vw, 2.75rem);
     padding-block: 1.75rem;
     border-bottom: 1px solid var(--color-border-dark);
+    scroll-margin-top: 4.5rem;
   }
 
   @media (min-width: 768px) {
     .resume-section {
-      grid-template-columns: 11.5rem 1fr;
+      grid-template-columns: 8.75rem 1fr; /* 140px for left section title */
       gap: 2rem;
       padding-block: 2rem;
     }
@@ -110,6 +105,7 @@
     font-weight: 700;
     line-height: 1.35;
     color: var(--color-text-primary);
+    letter-spacing: -0.01em;
   }
 
   /* Content Title (Company / Project / Skill Category Name) */
@@ -119,6 +115,7 @@
     font-weight: 700;
     line-height: 1.35;
     color: var(--color-text-primary);
+    letter-spacing: -0.01em;
   }
 
   /* Tech Badge / Label (Figma dark/label/background #334155, cornerRadius 3px) */
@@ -153,6 +150,7 @@
     font-weight: 500;
     line-height: 1.25;
     overflow: hidden;
+    transition: background-color 0.15s ease, transform 0.15s ease;
   }
 
   .figma-skill-progress {
@@ -208,5 +206,14 @@
     background-color: var(--color-text-secondary);
     flex-shrink: 0;
     margin-top: 0.45rem;
+  }
+
+  /* Utility for hiding scrollbar in floating nav */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

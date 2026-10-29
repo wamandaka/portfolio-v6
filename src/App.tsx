@@ -10,15 +10,20 @@ import LanguageProvider from "./i18n/LanguageProvider";
 const App: React.FC = () => {
   return (
     <LanguageProvider>
-      <div className="min-h-screen bg-[#0f172a] text-[#e2e8f0]">
+      <div className="min-h-screen bg-[#090d16] text-[#e2e8f0] px-0 sm:px-4 py-0 sm:py-10 md:py-14 antialiased">
+        {/* Floating Glassmorphic Nav Dock */}
         <Navbar />
-        <main id="main">
-          <Hero />
-          <About />
-          <Projects />
-          <Services />
-        </main>
-        <Footer />
+
+        {/* Unified Figma Resume Document Card Canvas */}
+        <div className="w-full sm:max-w-[780px] sm:mx-auto bg-[#0f172a] sm:border sm:border-[#334155] sm:rounded-2xl sm:shadow-[0_20px_60px_rgba(0,0,0,0.65)] overflow-hidden relative">
+          <main id="main">
+            <Hero />
+            <About />
+            <Projects />
+            <Services />
+          </main>
+          <Footer />
+        </div>
       </div>
     </LanguageProvider>
   );

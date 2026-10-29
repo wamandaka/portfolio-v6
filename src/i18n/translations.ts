@@ -50,6 +50,8 @@ const en = {
     clientLabel: "Client",
     viaLabel: "via",
     privateNote: "Internal enterprise system — no public demo available.",
+    preview: "Preview",
+    close: "Close",
   },
   services: {
     eyebrow: "What I do",
@@ -161,6 +163,8 @@ const id: Dictionary = {
     clientLabel: "Klien",
     viaLabel: "melalui",
     privateNote: "Sistem internal enterprise — tidak tersedia demo publik.",
+    preview: "Pratinjau",
+    close: "Tutup",
   },
   services: {
     eyebrow: "Yang saya kerjakan",
