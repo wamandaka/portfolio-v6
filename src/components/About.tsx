@@ -1,3 +1,4 @@
+import { FiCalendar } from "react-icons/fi";
 import { useLanguage } from "../i18n/useLanguage";
 import { experience } from "../data/experience";
 
@@ -5,48 +6,80 @@ const About = () => {
   const { language, t } = useLanguage();
 
   return (
-    <section id="about" aria-labelledby="about-title" className="py-section">
-      <div className="page-container">
-        <div className="grid gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <p className="eyebrow mb-4">{t.about.eyebrow}</p>
-            <h2 id="about-title" className="text-4xl font-extrabold sm:text-5xl">
-              {t.about.title}
-            </h2>
-          </div>
-          <div className="space-y-5 text-lg text-muted lg:col-span-7">
-            {t.about.paragraphs.map((paragraph) => (
-              <p key={paragraph} className="max-w-[60ch]">
-                {paragraph}
-              </p>
-            ))}
-            <p className="pt-2 text-sm">
-              <span className="font-semibold text-ink">{t.about.skillsLabel}: </span>
-              {t.about.skills.join(" · ")}
-            </p>
-          </div>
+    <div className="resume-container">
+      {/* Summary / About Section */}
+      <section id="about" aria-labelledby="about-title" className="resume-section">
+        <div>
+          <h2 id="about-title" className="resume-section-title">
+            {t.about.sectionTitle}
+          </h2>
         </div>
 
-        <div id="experience" className="mt-24 grid gap-12 border-t border-line pt-12 lg:grid-cols-12">
-          <h3 className="font-display text-2xl font-bold lg:col-span-5">{t.about.experienceTitle}</h3>
-          <ol className="divide-y divide-line lg:col-span-7">
-            {experience.map((entry) => (
-              <li key={entry.company} className="py-8 first:pt-0">
-                <p className="text-sm font-semibold text-accent-ink">{entry.period[language]}</p>
-                <h4 className="mt-1 font-display text-xl font-bold">{entry.role[language]}</h4>
-                <p className="text-muted">{entry.company}</p>
-                <p className="mt-3 max-w-[60ch]">{entry.summary[language]}</p>
-                <ul className="mt-4 max-w-[60ch] list-disc space-y-2 pl-5 text-muted marker:text-accent">
-                  {entry.highlights.map((highlight) => (
-                    <li key={highlight.en}>{highlight[language]}</li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ol>
+        <div className="space-y-2.5 text-xs leading-relaxed text-[#e2e8f0] sm:text-sm">
+          {t.about.paragraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Experience Section (Exact Figma experiences-section structure) */}
+      <section id="experience" aria-labelledby="experience-title" className="resume-section">
+        <div>
+          <h2 id="experience-title" className="resume-section-title">
+            {t.about.experienceTitle}
+          </h2>
+        </div>
+
+        <div className="space-y-6">
+          {experience.map((entry) => (
+            <article key={entry.company} className="space-y-2">
+              {/* Work Header Row: Company — Role (type) on left, Calendar + Date on right */}
+              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                <div className="flex flex-wrap items-baseline gap-x-1.5">
+                  <h3 className="resume-content-title">{entry.company}</h3>
+                  <span className="text-xs font-normal text-[#e2e8f0] sm:text-sm">
+                    — {entry.role[language]}
+                    {entry.employmentType && (
+                      <span className="ml-1 text-xs text-[#cbd5e1]">
+                        {entry.employmentType[language]}
+                      </span>
+                    )}
+                  </span>
+                </div>
+
+                <div className="inline-flex items-center gap-1.5 font-mono text-xs font-medium tracking-tight text-[#e2e8f0]">
+                  <FiCalendar aria-hidden="true" className="h-3.5 w-3.5 text-[#64748b]" />
+                  <span>{entry.period[language]}</span>
+                </div>
+              </div>
+
+              {/* Tech Labels Row */}
+              <ul className="flex flex-wrap gap-1.5" aria-label="Technologies">
+                {entry.tags.map((tag) => (
+                  <li key={tag} className="figma-badge">
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Bullet List with Figma 5x5 rounded-square dots */}
+              <ul className="space-y-1.5 pt-0.5 text-xs leading-relaxed text-[#e2e8f0] sm:text-[13px]">
+                <li className="flex items-start gap-2.5">
+                  <span aria-hidden="true" className="figma-bullet-dot" />
+                  <span>{entry.summary[language]}</span>
+                </li>
+                {entry.highlights.map((highlight) => (
+                  <li key={highlight.en} className="flex items-start gap-2.5">
+                    <span aria-hidden="true" className="figma-bullet-dot" />
+                    <span>{highlight[language]}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 };
 

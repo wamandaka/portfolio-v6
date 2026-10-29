@@ -1,61 +1,66 @@
 @import "tailwindcss";
 
 /*
- * Minimalist editorial design tokens.
- * Muted text and accent-ink are slightly darker than the base palette so that
- * small text keeps >= 4.5:1 contrast on the paper background.
+ * Figma Resume (Community) Dark Theme Design Tokens (Node 73:1096)
  */
 @theme {
-  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --color-paper: #f3f0e9;
-  --color-ink: #26251f;
-  --color-accent: #d96b43;
-  --color-accent-ink: #b24d28;
-  --color-surface: #e8e3da;
-  --color-muted: #6b655c;
-  --color-line: #d5d0c6;
+  /* Figma dark mode styles */
+  --color-bg-dark: #0f172a;
+  --color-text-primary: #e2e8f0;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #64748b;
+  --color-border-dark: #334155;
+  --color-label-bg: #334155;
+  --color-label-text: #cbd5e1;
+  --color-label-bright: #f1f5f9;
+  --color-progress-bar: rgba(100, 116, 139, 0.72);
+  --color-link-underline: rgba(119, 51, 255, 0.36);
+  --color-link-underline-hover: rgba(119, 51, 255, 0.65);
 
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  /* Legacy aliases for smooth compatibility */
+  --color-paper: #0f172a;
+  --color-ink: #e2e8f0;
+  --color-accent: #8b5cf6;
+  --color-accent-ink: #a78bfa;
+  --color-surface: #1e293b;
+  --color-muted: #94a3b8;
+  --color-line: #334155;
 
-  --spacing-section: clamp(5rem, 10vw, 9rem);
-  --container-page: 72rem;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
 }
 
 @layer base {
   html {
     font-family: var(--font-sans);
-    background-color: var(--color-paper);
-    color: var(--color-ink);
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-primary);
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    color-scheme: dark;
   }
 
   body {
     -webkit-font-smoothing: antialiased;
-    line-height: 1.65;
-  }
-
-  h1,
-  h2,
-  h3 {
-    font-family: var(--font-display);
-    letter-spacing: -0.02em;
-    text-wrap: balance;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-primary);
+    line-height: 1.6;
   }
 
   ::selection {
-    background: var(--color-accent);
-    color: var(--color-paper);
+    background: rgba(119, 51, 255, 0.45);
+    color: #f8fafc;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent-ink);
-    outline-offset: 3px;
-    border-radius: var(--radius-sm);
+    outline: 2px solid #8b5cf6;
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -73,71 +78,135 @@
 }
 
 @layer components {
-  .page-container {
+  /* Centered resume/portfolio container matching Figma's proportions scaled for web */
+  .resume-container {
     width: 100%;
-    max-width: var(--container-page);
+    max-width: 56rem; /* 896px */
     margin-inline: auto;
-    padding-inline: clamp(1.25rem, 5vw, 2.5rem);
+    padding-inline: clamp(1.25rem, 5vw, 3.5rem);
   }
 
-  .eyebrow {
+  /* Two-column section row matching Figma's Left Section Title (x:501) + Right Content (x:629) */
+  .resume-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--color-border-dark);
+  }
+
+  @media (min-width: 768px) {
+    .resume-section {
+      grid-template-columns: 11.5rem 1fr;
+      gap: 2rem;
+      padding-block: 2rem;
+    }
+  }
+
+  /* Section Title (Plus Jakarta Sans Bold) */
+  .resume-section-title {
     font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-accent-ink);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--color-text-primary);
   }
 
-  .btn {
+  /* Content Title (Company / Project / Skill Category Name) */
+  .resume-content-title {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--color-text-primary);
+  }
+
+  /* Tech Badge / Label (Figma dark/label/background #334155, cornerRadius 3px) */
+  .figma-badge {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.85rem 1.5rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    font-size: 0.9375rem;
-    border: 1px solid var(--color-ink);
-    transition:
-      background-color 0.2s ease,
-      color 0.2s ease,
-      border-color 0.2s ease;
-  }
-
-  .btn-primary {
-    background: var(--color-ink);
-    color: var(--color-paper);
-  }
-  .btn-primary:hover {
-    background: var(--color-accent-ink);
-    border-color: var(--color-accent-ink);
-  }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--color-ink);
-  }
-  .btn-ghost:hover {
-    background: var(--color-surface);
-  }
-
-  .link-underline {
-    background-image: linear-gradient(currentColor, currentColor);
-    background-size: 100% 1px;
-    background-position: 0 100%;
-    background-repeat: no-repeat;
-    transition: color 0.2s ease;
-  }
-  .link-underline:hover {
-    color: var(--color-accent-ink);
-  }
-
-  .tag {
-    display: inline-block;
-    padding: 0.2rem 0.65rem;
-    border: 1px solid var(--color-line);
-    border-radius: 9999px;
+    justify-content: center;
+    padding: 0.1875rem 0.4375rem;
+    border-radius: 4px;
+    background-color: var(--color-label-bg);
+    color: var(--color-label-text);
+    font-family: var(--font-sans);
     font-size: 0.75rem;
-    color: var(--color-muted);
+    font-weight: 500;
+    line-height: 1.25;
+    overflow: hidden;
+  }
+
+  /* Skill Badge with bottom progress underline indicator */
+  .figma-skill-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.5rem 0.3125rem;
+    border-radius: 4px;
+    background-color: var(--color-label-bg);
+    color: var(--color-label-bright);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.25;
+    overflow: hidden;
+  }
+
+  .figma-skill-progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    background-color: var(--color-progress-bar);
+    border-radius: 9999px;
+  }
+
+  /* Figma link with thick #7733ff/36 bottom highlight bar */
+  .figma-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--color-text-primary);
+    font-weight: 400;
+    text-decoration: none;
+    z-index: 0;
+  }
+
+  .figma-link-text {
+    position: relative;
+    display: inline-block;
+  }
+
+  .figma-link-text::after {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: 1px;
+    height: 5px;
+    background-color: var(--color-link-underline);
+    z-index: -1;
+    transition:
+      height 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .figma-link:hover .figma-link-text::after {
+    height: 8px;
+    background-color: var(--color-link-underline-hover);
+  }
+
+  /* Figma rounded-square list bullet (5x5px rx=1.5px in #cbd5e1) */
+  .figma-bullet-dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 2px;
+    background-color: var(--color-text-secondary);
+    flex-shrink: 0;
+    margin-top: 0.45rem;
   }
 }

@@ -11,7 +11,10 @@ const en = {
   },
   nav: {
     label: "Primary",
-    work: "Work",
+    work: "Projects",
+    experience: "Experience",
+    skills: "Skills",
+    services: "Services",
     about: "About",
     contact: "Contact",
     openMenu: "Open menu",
@@ -20,7 +23,8 @@ const en = {
     language: "Language",
   },
   hero: {
-    eyebrow: "Frontend Engineer · Jakarta, Indonesia",
+    eyebrow: "Frontend Engineer · React, Next.js & TypeScript",
+    location: "Jakarta, Indonesia",
     headline: "I build thoughtful digital experiences.",
     description:
       "I'm a Frontend Engineer focused on React, Next.js, and TypeScript. I turn ideas and requirements into clean, responsive, and maintainable web interfaces.",
@@ -31,9 +35,12 @@ const en = {
   },
   work: {
     eyebrow: "Selected work",
+    sectionTitle: "Featured Project",
     title: "Projects I'm proud to share.",
     intro: "A few public projects built with React and modern tooling.",
     demo: "Live demo",
+    moreDetailsAt: "More details at",
+    seeAllPrefix: "see all of my projects on my GitHub:",
     source: "Source",
     other: "Also worked on",
     privateLabel: "Private project",
@@ -42,10 +49,11 @@ const en = {
     present: "present",
     clientLabel: "Client",
     viaLabel: "via",
-    privateNote: "Internal system — no public demo available.",
+    privateNote: "Internal enterprise system — no public demo available.",
   },
   services: {
     eyebrow: "What I do",
+    sectionTitle: "Services",
     title: "Interfaces that are fast to use and easy to maintain.",
     items: [
       {
@@ -72,6 +80,7 @@ const en = {
   },
   about: {
     eyebrow: "About & experience",
+    sectionTitle: "Summary",
     title: "Clean interfaces, clear communication.",
     paragraphs: [
       "I'm a Frontend Engineer based in Jakarta. I work with React, Next.js, and TypeScript, and care about readable code, responsive layouts, and interfaces people can actually use.",
@@ -80,6 +89,10 @@ const en = {
     skillsLabel: "Core tools",
     skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "REST APIs", "Git"],
     experienceTitle: "Experience",
+    skillsSectionTitle: "Skills & Tools",
+    underlineIndicators: "Underline indicators",
+    frequentlyUsed: "Frequently Used",
+    occasionally: "Occasionally",
     present: "Present",
   },
   contact: {
@@ -109,8 +122,11 @@ const id: Dictionary = {
   },
   nav: {
     label: "Utama",
-    work: "Karya",
-    about: "Tentang",
+    work: "Proyek",
+    experience: "Pengalaman",
+    skills: "Keahlian",
+    services: "Layanan",
+    about: "Ringkasan",
     contact: "Kontak",
     openMenu: "Buka menu",
     closeMenu: "Tutup menu",
@@ -118,7 +134,8 @@ const id: Dictionary = {
     language: "Bahasa",
   },
   hero: {
-    eyebrow: "Frontend Engineer · Jakarta, Indonesia",
+    eyebrow: "Frontend Engineer · React, Next.js & TypeScript",
+    location: "Jakarta, Indonesia",
     headline: "Saya membangun pengalaman digital yang dirancang dengan baik.",
     description:
       "Saya adalah Frontend Engineer yang berfokus pada React, Next.js, dan TypeScript. Saya mengubah ide dan kebutuhan menjadi antarmuka web yang rapi, responsif, dan mudah dikembangkan.",
@@ -129,9 +146,12 @@ const id: Dictionary = {
   },
   work: {
     eyebrow: "Karya pilihan",
+    sectionTitle: "Proyek Pilihan",
     title: "Proyek yang bangga saya bagikan.",
     intro: "Beberapa proyek publik yang dibangun dengan React dan tooling modern.",
     demo: "Demo langsung",
+    moreDetailsAt: "Selengkapnya di",
+    seeAllPrefix: "lihat semua proyek saya di GitHub:",
     source: "Kode sumber",
     other: "Proyek lainnya",
     privateLabel: "Proyek privat",
@@ -140,10 +160,11 @@ const id: Dictionary = {
     present: "sekarang",
     clientLabel: "Klien",
     viaLabel: "melalui",
-    privateNote: "Sistem internal — tidak tersedia demo publik.",
+    privateNote: "Sistem internal enterprise — tidak tersedia demo publik.",
   },
   services: {
     eyebrow: "Yang saya kerjakan",
+    sectionTitle: "Layanan",
     title: "Antarmuka yang cepat digunakan dan mudah dirawat.",
     items: [
       {
@@ -170,6 +191,7 @@ const id: Dictionary = {
   },
   about: {
     eyebrow: "Tentang & pengalaman",
+    sectionTitle: "Ringkasan",
     title: "Antarmuka yang rapi, komunikasi yang jelas.",
     paragraphs: [
       "Saya Frontend Engineer yang berbasis di Jakarta. Saya bekerja dengan React, Next.js, dan TypeScript, serta peduli pada kode yang mudah dibaca, tata letak responsif, dan antarmuka yang benar-benar nyaman digunakan.",
@@ -178,6 +200,10 @@ const id: Dictionary = {
     skillsLabel: "Tools utama",
     skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "REST API", "Git"],
     experienceTitle: "Pengalaman",
+    skillsSectionTitle: "Keahlian & Tools",
+    underlineIndicators: "Indikator garis bawah",
+    frequentlyUsed: "Sering Digunakan",
+    occasionally: "Sesekali Digunakan",
     present: "Sekarang",
   },
   contact: {
