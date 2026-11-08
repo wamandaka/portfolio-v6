@@ -172,7 +172,7 @@ const Navbar = () => {
                   onClick={() => setLanguage(code)}
                   className={`cursor-pointer px-1.5 py-0.5 text-[11px] font-bold rounded uppercase transition-colors ${
                     isCurrent
-                      ? "text-white bg-[#7733ff]/30 text-[#e2e8f0]"
+                      ? "text-white bg-[#7733ff]/30"
                       : "text-[#64748b] hover:text-[#cbd5e1]"
                   }`}
                 >
