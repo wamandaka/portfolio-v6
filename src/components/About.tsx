@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { FiCalendar } from "react-icons/fi";
 import { useLanguage } from "../i18n/useLanguage";
 import { experience } from "../data/experience";
@@ -9,14 +8,10 @@ const About = () => {
   return (
     <>
       {/* Summary / About Section */}
-      <motion.section
+      <section
         id="about"
         aria-labelledby="about-title"
         className="resume-section"
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.45, ease: "easeOut" }}
       >
         <div>
           <h2 id="about-title" className="resume-section-title">
@@ -29,17 +24,13 @@ const About = () => {
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
-      </motion.section>
+      </section>
 
       {/* Experience Section */}
-      <motion.section
+      <section
         id="experience"
         aria-labelledby="experience-title"
         className="resume-section"
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.45, ease: "easeOut" }}
       >
         <div>
           <h2 id="experience-title" className="resume-section-title">
@@ -95,7 +86,7 @@ const About = () => {
             </article>
           ))}
         </div>
-      </motion.section>
+      </section>
     </>
   );
 };

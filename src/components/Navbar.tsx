@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLanguage } from "../i18n/useLanguage";
 import { supportedLanguages } from "../i18n/translations";
@@ -9,35 +9,38 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const links = [
-    { id: "about", label: t.nav.about, href: "#about" },
-    { id: "experience", label: t.nav.experience, href: "#experience" },
-    { id: "project", label: t.nav.work, href: "#project" },
-    { id: "skills", label: t.nav.skills, href: "#skills" },
-    { id: "services", label: t.nav.services, href: "#services" },
-    { id: "contact", label: t.nav.contact, href: "#contact" },
-  ];
+  const links = useMemo(
+    () => [
+      { id: "about", label: t.nav.about, href: "#about" },
+      { id: "experience", label: t.nav.experience, href: "#experience" },
+      { id: "project", label: t.nav.work, href: "#project" },
+      { id: "contact", label: t.nav.contact, href: "#contact" },
+    ],
+    [t]
+  );
 
-  // Active section spy
+  // Active section spy using native IntersectionObserver (no forced reflow on scroll)
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 200;
-      for (const link of links) {
-        const el = document.getElementById(link.id);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(link.id);
-            break;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
           }
         }
+      },
+      {
+        rootMargin: "-20% 0px -65% 0px",
+        threshold: 0,
       }
-    };
+    );
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    for (const link of links) {
+      const el = document.getElementById(link.id);
+      if (el) observer.observe(el);
+    }
+
+    return () => observer.disconnect();
   }, [links]);
 
   // Close on outside click or escape key
@@ -106,7 +109,7 @@ const Navbar = () => {
             transition={{ duration: 0.2 }}
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
+            className="fixed inset-0 z-40 bg-black/60 md:hidden"
           />
         )}
       </AnimatePresence>
@@ -181,11 +184,11 @@ const Navbar = () => {
         </nav>
 
         {/* ======================================================== */}
-        {/* MOBILE NAV (< md): Dynamic Capsule HUD with Morph Button */}
+        {/* MOBILE NAV (< md): Clean Opaque Capsule (Zero Blur Cost) */}
         {/* ======================================================== */}
         <div className="md:hidden flex flex-col">
           {/* Top Floating Control Capsule */}
-          <div className="flex items-center justify-between p-1 pl-3 rounded-full backdrop-blur-md bg-[#0f172a]/90 border border-[#334155]/90 shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+          <div className="flex items-center justify-between p-1 pl-3 rounded-full bg-[#0f172a] border border-[#334155] shadow-lg">
             {/* Active Section Tracker Badge */}
             <div className="flex items-center gap-1.5 font-mono text-xs">
               <span className="h-1.5 w-1.5 rounded-full bg-[#a78bfa] animate-pulse" />
@@ -261,7 +264,7 @@ const Navbar = () => {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -6 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className="mt-2 overflow-hidden rounded-2xl backdrop-blur-xl bg-[#0f172a]/95 border border-[#334155] p-2 shadow-[0_16px_36px_rgba(0,0,0,0.65)]"
+                className="mt-2 overflow-hidden rounded-2xl bg-[#0f172a] border border-[#334155] p-2 shadow-2xl"
               >
                 {/* 2-Column Command Grid of Sections */}
                 <div className="grid grid-cols-2 gap-1.5">

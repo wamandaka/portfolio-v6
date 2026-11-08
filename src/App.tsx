@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Projects from "./components/Projects";
-import Services from "./components/Services";
+// import Services from "./components/Services";
 import Footer from "./components/Footer";
 import LanguageProvider from "./i18n/LanguageProvider";
 
@@ -20,7 +20,7 @@ const App: React.FC = () => {
             <Hero />
             <About />
             <Projects />
-            <Services />
+            {/* <Services /> */}
           </main>
           <Footer />
         </div>

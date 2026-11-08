@@ -216,4 +216,29 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Hardware-accelerated compositor animation for hero mesh glow */
+  @keyframes heroGlowPulse {
+    0%, 100% {
+      opacity: 0.65;
+      transform: translate3d(-50%, 0, 0) scale(0.97);
+    }
+    50% {
+      opacity: 0.85;
+      transform: translate3d(-50%, 0, 0) scale(1.03);
+    }
+  }
+
+  .hero-glow-animation {
+    animation: heroGlowPulse 8s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+
+  /* Defer off-screen sections rendering to improve LCP and FCP */
+  #experience,
+  #project,
+  #contact {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 600px;
+  }
 }

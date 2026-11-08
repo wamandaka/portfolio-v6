@@ -29,13 +29,7 @@ const Footer = () => {
   return (
     <footer id="contact" aria-labelledby="contact-title">
       {/* Contact Section Row */}
-      <motion.div
-        className="resume-section"
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.45, ease: "easeOut" }}
-      >
+      <div className="resume-section">
         <div>
           <h2 id="contact-title" className="resume-section-title">
             {t.contact.eyebrow}
@@ -110,7 +104,7 @@ const Footer = () => {
             ))}
           </ul>
         </div>
-      </motion.div>
+      </div>
 
       {/* Document Bottom Footer Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 px-5 py-5 sm:px-10 text-xs text-[#64748b]">
@@ -119,16 +113,14 @@ const Footer = () => {
         </p>
         <div className="flex items-center gap-3">
           <span className="hidden sm:inline">{t.footer.built}</span>
-          <motion.button
-            whileHover={{ y: -2, scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <button
             type="button"
             onClick={scrollToTop}
             aria-label={t.footer.top}
-            className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-[4px] bg-[#334155] text-[#cbd5e1] transition-colors hover:bg-[#475569] hover:text-[#f1f5f9]"
+            className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-[4px] bg-[#334155] text-[#cbd5e1] transition-all hover:bg-[#475569] hover:text-[#f1f5f9] hover:-translate-y-0.5 active:scale-95 duration-150"
           >
             <FiArrowUp aria-hidden="true" className="h-3.5 w-3.5" />
-          </motion.button>
+          </button>
         </div>
       </div>
     </footer>

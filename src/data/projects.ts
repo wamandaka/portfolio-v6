@@ -1,4 +1,7 @@
 import type { Localized } from "../i18n/translations";
+import movieApp from "../assets/projects/movie-app.web.jpg";
+import dashboardIuran from "../assets/projects/dashboard-jakmen.web.jpg";
+import weatherApp from "../assets/projects/weather-app.web.jpg";
 
 export interface CurrentProject {
   client: string;
@@ -25,9 +28,6 @@ export const currentProject: CurrentProject = {
   startDate: "2026-01-28",
   tags: ["React", "TypeScript", "Tailwind CSS", "REST APIs"],
 };
-import movieApp from "../assets/projects/movie-app.web.jpg";
-import dashboardIuran from "../assets/projects/dashboard-jakmen.web.jpg";
-import weatherApp from "../assets/projects/weather-app.web.jpg";
 
 export interface FeaturedProject {
   name: string;

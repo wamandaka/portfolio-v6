@@ -35,14 +35,10 @@ const Projects = () => {
 
   return (
     <>
-      <motion.section
+      <section
         id="project"
         aria-labelledby="work-title"
         className="resume-section"
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.45, ease: "easeOut" }}
       >
         <div>
           <h2 id="work-title" className="resume-section-title">
@@ -162,7 +158,7 @@ const Projects = () => {
             </a>
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Lightbox Screenshot Preview Modal */}
       <AnimatePresence>
